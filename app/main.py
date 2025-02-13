@@ -22,3 +22,4 @@ app.add_middleware(
 @app.get("/")
 def index():
     return {"message": "Server is on..."}
+
