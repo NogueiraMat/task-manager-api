@@ -25,6 +25,7 @@ orjson==3.9.7
 packaging==24.0
 pathspec==0.11.2
 platformdirs==4.0.0
+psycopg2==2.9.9
 pydantic==2.5.3
 pydantic-extra-types==2.3.0
 pydantic-settings==2.0.3
