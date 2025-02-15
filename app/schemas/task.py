@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
-from sqlalchemy.orm import relationship
 
 from schemas.base import Base
 from schemas.user import User
@@ -17,6 +16,4 @@ class Task(Base):
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
 
     user_id = Column(ForeignKey(User.id), nullable=False)
-
-    user = relationship("User", back_populates="tasks")
 
