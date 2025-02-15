@@ -2,11 +2,13 @@ import os
 
 from logging.config import fileConfig
 
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from sqlalchemy import create_engine
 
-from schemas.task import Base as BaseTask
+import schemas.task
+import schemas.user
+
+from schemas.base import Base
+
 
 from alembic import context
 
@@ -19,11 +21,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = MetaData()
-
-for base in [BaseTask]:
-    for table in base.metadata.tables.values():
-        target_metadata._add_table(table.name, table.schema, table)
+target_metadata = Base.metadata
 
 
 def get_url():
