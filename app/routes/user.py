@@ -1,13 +1,13 @@
 from datetime import datetime
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, Request
 from fastapi.responses import JSONResponse
 
 from database.connection import get_db
 from sqlalchemy.orm import Session
 
-from models.user import CreateUserRequest, CreateUserResponse
-from utils.security import create_hashed_string
+from models.user import CreateUserRequest, CreateUserResponse, CurrentUserResponse
+from utils.security import create_hashed_string, validate_session
 from schemas.user import User
 
 
@@ -44,5 +44,35 @@ def add_user(data: CreateUserRequest, db: Session = Depends(get_db)):
             username=data.username,
         ).model_dump(),
         status_code=status.HTTP_201_CREATED,
+    )
+
+
+@router.get("/user")
+def get_user(db: Session = Depends(get_db), session=Depends(validate_session)):
+    if not session:
+        return HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail={
+                "message": "Usuário não autenticado!",
+            },
+        )
+
+    user = db.query(User).filter_by(username=session["sub"]).first()
+    if not user:
+        return HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail={
+                "message": "Usuário não encontrado!",
+            },
+        )
+
+    return JSONResponse(
+        CurrentUserResponse(
+            first_name=user.first_name,
+            last_name=user.last_name,
+            username=user.username,
+            created_at=str(user.created_at),
+        ).model_dump(),
+        status_code=status.HTTP_200_OK,
     )
 

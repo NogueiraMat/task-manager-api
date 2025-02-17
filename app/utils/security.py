@@ -1,10 +1,12 @@
 from datetime import timedelta, datetime
 from dotenv import load_dotenv
+
 from jwt import InvalidTokenError, ExpiredSignatureError
 import bcrypt
 import jwt
 import os
 
+from fastapi import Request
 
 load_dotenv()
 
@@ -43,4 +45,14 @@ def create_hashed_string(text: str) -> str:
 
 def validate_hashed_string(text: str, hashed_text: str) -> bool:
     return bcrypt.checkpw(text.encode("utf-8"), hashed_text.encode("utf-8"))
+
+
+def validate_session(request: Request):
+    token = request.cookies.get("access_token")
+    if not token:
+        return False
+    payload = validate_jwt_token(token)
+    if payload:
+        return payload
+    return False
 
