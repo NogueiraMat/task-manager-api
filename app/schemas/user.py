@@ -3,7 +3,6 @@ from datetime import datetime
 
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Column, String, DateTime
-from sqlalchemy.orm import relationship
 
 from schemas.base import Base
 
@@ -18,6 +17,4 @@ class User(Base):
     password = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now(), onupdate=datetime.now())
-
-    tasks = relationship("Task", back_populates="user")
 

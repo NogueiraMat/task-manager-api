@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from routes.auth import router as auth_router
+from routes.user import router as user_router
+from routes.task import router as task_router
+
+
 app = FastAPI(
     title="Task Manager API",
     description="Sample FastAPI application for task manager",
@@ -22,4 +27,9 @@ app.add_middleware(
 @app.get("/")
 def index():
     return {"message": "Server is on..."}
+
+
+app.include_router(auth_router, prefix="/api", tags=["Authentication"])
+app.include_router(user_router, prefix="/api", tags=["Users"])
+app.include_router(task_router, prefix="/api", tags=["Tasks"])
 
