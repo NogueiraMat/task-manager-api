@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from fastapi import APIRouter, HTTPException, status, Depends, Request
+from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.responses import JSONResponse
 
 from database.connection import get_db
