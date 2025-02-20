@@ -63,3 +63,9 @@ def authentication(
 
     return response
 
+
+@router.post("logout")
+def logout(response: Response):
+    response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token")
+    return JSONResponse({"message": "Logout realizado com sucesso!"})
