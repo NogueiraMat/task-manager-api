@@ -64,7 +64,7 @@ def authentication(
     return response
 
 
-@router.post("logout")
+@router.post("/logout")
 def logout(response: Response):
     response.delete_cookie("access_token")
     response.delete_cookie("refresh_token")
