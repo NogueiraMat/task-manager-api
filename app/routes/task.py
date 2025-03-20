@@ -22,11 +22,12 @@ def add_task(
     db: Session = Depends(get_db),
 ):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user_id = db.query(User).filter_by(username=session["sub"]).first()
@@ -56,11 +57,12 @@ def add_task(
 @router.get("/task")
 def get_task(session=Depends(validate_session), db: Session = Depends(get_db)):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return  JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user_id = db.query(User).filter_by(username=session["sub"]).first()
@@ -88,11 +90,12 @@ def get_task_by_id(
     id: int, session=Depends(validate_session), db: Session = Depends(get_db)
 ):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user_id = db.query(User).filter_by(username=session["sub"]).first()
@@ -125,13 +128,13 @@ def delete_task(
     id: int, session=Depends(validate_session), db: Session = Depends(get_db)
 ):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
-        )
+            status_code=status.HTTP_401_UNAUTHORIZED,
 
+        )
     user_id = db.query(User).filter_by(username=session["sub"]).first()
 
     task = db.query(Task).filter_by(user_id=user_id.id, id=id).first()
@@ -163,11 +166,12 @@ def update_task(
     db: Session = Depends(get_db),
 ):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user_id = db.query(User).filter_by(username=session["sub"]).first()
@@ -200,11 +204,12 @@ def update_task_status(
     id: int, session=Depends(validate_session), db: Session = Depends(get_db)
 ):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user_id = db.query(User).filter_by(username=session["sub"]).first()

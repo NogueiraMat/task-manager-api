@@ -50,11 +50,12 @@ def add_user(data: CreateUserRequest, db: Session = Depends(get_db)):
 @router.get("/user")
 def get_user(db: Session = Depends(get_db), session=Depends(validate_session)):
     if not session:
-        return HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail={
+        return JSONResponse(
+            {
                 "message": "Usuário não autenticado!",
             },
+            status_code=status.HTTP_401_UNAUTHORIZED,
+
         )
 
     user = db.query(User).filter_by(username=session["sub"]).first()
